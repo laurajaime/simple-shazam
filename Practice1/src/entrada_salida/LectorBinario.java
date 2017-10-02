@@ -76,7 +76,7 @@ public final class LectorBinario {
      */
     public char leerPalabra() {
     
-    	if (esVacio()) throw new RuntimeException("Leyendo de un flujo de entrada vacío");
+    	if (esVacio()) throw new RuntimeException("Leyendo de un flujo de entrada vacio");
     	// Caso especial de alineado:
         if (numBitsOcupados == 8) {
         	int aux = buffer;

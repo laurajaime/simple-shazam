@@ -43,6 +43,27 @@ public class PlantillaCodificacionHuffman {
 		///////////////////////TAREA1.1///////////////////////
 		// Generar tabla de frecuencias (freq) a partir del array de tipo char input.
 		
+		char [] freq = new char[input.length];
+		
+		for(int i=0; i<input.length;i++) {
+			//Cada indice representa un simbolo (i) y su valor la frecuencia freq[i]
+			int contadorA;
+			/*if(input[i]  "a") {
+				
+			}*/
+			freq[i]=input[i];
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//////////////////////////////////////////////////////
 		
 		// Construir árbol de Huffman.
