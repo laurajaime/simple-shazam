@@ -1,5 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import entrada_salida.EscritorBinario;
 import entrada_salida.LectorBinario;
@@ -43,26 +45,24 @@ public class PlantillaCodificacionHuffman {
 
 		///////////////////////TAREA1.1///////////////////////
 		// Generar tabla de frecuencias (freq) a partir del array de tipo char input.
-		Map<String, Long> freq;
-		freq = new HashMap<String, Long>();
+		Map<Character, Integer> freq;
+		freq = new HashMap<Character, Integer>();
 		
 		
 		for(int i=0; i<input.length;i++) {
 			if(null==freq.get(""+input[i])) {
-					freq.put(""+input[i], 1L);
+					freq.put(input[i], 1);
 			}
 			else {
-				Long valor = freq.get(input[i]);
+				int valor = freq.get(input[i]);
 				valor++;
 				//Ahora freq contiene una tabla hash con las frecuencias de aparici�n
-				freq.put(""+input[i], valor);
+				freq.put(input[i], valor);
 			}
 		}
 		
 		
-		
-		
-		
+
 		//////////////////////////////////////////////////////
 		
 		// Construir árbol de Huffman.
@@ -88,6 +88,8 @@ public class PlantillaCodificacionHuffman {
     	// implementación propia).
     
         //////////////////////////////////////////////////////
+   
+    	
     	
     	
     	///////////////////////TAREA1.3///////////////////////
@@ -117,11 +119,18 @@ public class PlantillaCodificacionHuffman {
  	private ArbolHuffman construirArbol(Map<Character,Integer> freq) {
  		
  		///////////////////////TAREA1.2///////////////////////
-       
+       Queue<Map<Character, Integer>> cola = new PriorityQueue<Map<Character, Integer>>();
+        		
         //////////////////////////////////////////////////////
     	
  		
     	///////////////////////TAREA1.3///////////////////////
+       cola.add(freq);
+       
+       
+       
+       
+       
        
         //////////////////////////////////////////////////////
     	
