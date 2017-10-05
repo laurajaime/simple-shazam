@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Map;
 
 import entrada_salida.EscritorBinario;
@@ -42,23 +43,21 @@ public class PlantillaCodificacionHuffman {
 
 		///////////////////////TAREA1.1///////////////////////
 		// Generar tabla de frecuencias (freq) a partir del array de tipo char input.
+		Map<String, Long> freq;
+		freq = new HashMap<String, Long>();
 		
-		char [] freq = new char[input.length];
 		
 		for(int i=0; i<input.length;i++) {
-			//Cada indice representa un simbolo (i) y su valor la frecuencia freq[i]
-			int contadorA;
-			/*if(input[i]  "a") {
-				
-			}*/
-			freq[i]=input[i];
+			if(null==freq.get(""+input[i])) {
+					freq.put(""+input[i], 1L);
+			}
+			else {
+				Long valor = freq.get(input[i]);
+				valor++;
+				//Ahora freq contiene una tabla hash con las frecuencias de aparición
+				freq.put(""+input[i], valor);
+			}
 		}
-		
-		
-		
-		
-		
-		
 		
 		
 		
