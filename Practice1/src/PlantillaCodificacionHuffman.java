@@ -42,15 +42,17 @@ public class PlantillaCodificacionHuffman {
 							// de 8 bits y el tipo char es de 16 bits
 		}
 		char[] input = sb.toString().toCharArray();
+		//System.out.print(input);
 
 		///////////////////////TAREA1.1///////////////////////
 		// Generar tabla de frecuencias (freq) a partir del array de tipo char input.
 		Map<Character, Integer> freq;
 		freq = new HashMap<Character, Integer>();
+
 		
 		
 		for(int i=0; i<input.length;i++) {
-			if(null==freq.get(""+input[i])) {
+			if(null==freq.get(input[i])) {
 					freq.put(input[i], 1);
 			}
 			else {
@@ -60,7 +62,8 @@ public class PlantillaCodificacionHuffman {
 				freq.put(input[i], valor);
 			}
 		}
-		
+		System.out.println(freq);
+
 		
 
 		//////////////////////////////////////////////////////
@@ -76,6 +79,8 @@ public class PlantillaCodificacionHuffman {
 		// Codificar la trama (char[]input) usando el diccionario de códigos.
         // codificar(input,diccionarioCodigos,filePathOut,arbol);
 	}
+    
+    //Fin metodo comprimir
 	
    /* 
     * Construir arbol de Huffman a partir de la tabla de frecuencias.
@@ -186,6 +191,8 @@ public class PlantillaCodificacionHuffman {
         
         // Escribir también el número de bytes del mensaje original (sin comprimir).
         escritor.escribirEntero(input.length);
+        
+        System.out.println("Entra en codificar");
     	
     	///////////////////////TAREA1.6///////////////////////
         // Codificación usando el diccionario de códigos y escritura en el archivo de salida. 
