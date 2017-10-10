@@ -62,6 +62,7 @@ public class PlantillaCodificacionHuffman {
 				freq.put(input[i], valor);
 			}
 		}
+		
 		System.out.println(freq);
 
 		
@@ -69,15 +70,16 @@ public class PlantillaCodificacionHuffman {
 		//////////////////////////////////////////////////////
 		
 		// Construir árbol de Huffman.
-        // ArbolHuffman arbol = construirArbol(freq); 
+        ArbolHuffman arbol = construirArbol(freq); 
 		
 		// Construir diccionario de búsqueda -> Pares (símbolo,código).
 		// diccionarioCodigos será una estructura de tipo Map, Hashtable, String[], ...,
 		// dependiendo de la implementación elegida.
-        // construirCodigos(diccionarioCodigos,arbol,"");
+        Map<Character, String> diccionarioCodigos = new HashMap<Character, String>();
+        construirCodigos(diccionarioCodigos,arbol,"");
 		
 		// Codificar la trama (char[]input) usando el diccionario de códigos.
-        // codificar(input,diccionarioCodigos,filePathOut,arbol);
+        codificar(input,diccionarioCodigos,filePathOut,arbol);
 	}
     
     //Fin metodo comprimir
