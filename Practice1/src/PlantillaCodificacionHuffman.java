@@ -71,6 +71,7 @@ public class PlantillaCodificacionHuffman {
 		
 		// Construir árbol de Huffman.
         ArbolHuffman arbol = construirArbol(freq); 
+        
 		
 		// Construir diccionario de búsqueda -> Pares (símbolo,código).
 		// diccionarioCodigos será una estructura de tipo Map, Hashtable, String[], ...,
@@ -126,13 +127,42 @@ public class PlantillaCodificacionHuffman {
  	private ArbolHuffman construirArbol(Map<Character,Integer> freq) {
  		
  		///////////////////////TAREA1.2///////////////////////
-       Queue<Map<Character, Integer>> cola = new PriorityQueue<Map<Character, Integer>>();
+ 		// Instanciar cola de prioridad (de tipo TreeSet, PriorityQueue o una 
+    	// implementación propia).
+       Queue<ArbolHuffman> cola = new PriorityQueue<ArbolHuffman>();
         		
         //////////////////////////////////////////////////////
     	
  		
     	///////////////////////TAREA1.3///////////////////////
-       cola.add(freq);
+       // Inicializar la cola de prioridad con árboles simples (nodos hoja) para 
+       // cada símbolo de la tabla de frecuencias. Usar la estructura de datos 
+       // de tipo arbol binario que se facilita en los recursos de la práctica
+   		// (ArbolHuffman.java).
+       
+       for (int i = 0; i < freq.size(); i++) {
+			if (freq.get(i) != 0) {
+				ArbolHuffman arbol = new ArbolHuffman((char) i, freq.get(i), null, null);
+				cola.add(arbol);
+			}
+		}
+		ArbolHuffman arbolAux = null;
+		while (cola.size() != 1) {
+			ArbolHuffman arbolarbolAuxiliar = cola.poll();
+			ArbolHuffman arbolarbolAuxiliar1 = cola.poll();
+			//Vamos sacando los elementos de la colaPrioritaria de dos en dos y, dependiendo del valor que
+			//tenga cada elemento así se colocará como hijo derecho o izquierdo.
+			if (arbolarbolAuxiliar.getFrecuencia() > arbolarbolAuxiliar1.getFrecuencia()) {
+				arbolAux = new ArbolHuffman('\0', arbolarbolAuxiliar.getFrecuencia() + arbolarbolAuxiliar1.getFrecuencia(), arbolarbolAuxiliar1, arbolarbolAuxiliar);
+
+			} else {
+				arbolAux = new ArbolHuffman('\0', arbolarbolAuxiliar.getFrecuencia() + arbolarbolAuxiliar1.getFrecuencia(), arbolarbolAuxiliar, arbolarbolAuxiliar1);
+			}
+			cola.add(arbolAux);
+
+		}
+		return cola.poll();
+
        
        
        
@@ -148,7 +178,7 @@ public class PlantillaCodificacionHuffman {
     	
  		// Sustituir este objeto retornando el árbol de Huffman final 
  		// construido en la TAREA1.4
-     	return new ArbolHuffman(); 
+     	//return new ArbolHuffman(); 
  	}
  	
    /* 
