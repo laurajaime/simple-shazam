@@ -4,11 +4,8 @@
  * Autor: Laura Jaime Villamayor
  * 
  */
-import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Queue;
-
 import entrada_salida.EscritorBinario;
 import entrada_salida.LectorBinario;
 import estructuras_datos.ArbolHuffman;
@@ -28,9 +25,7 @@ public class PlantillaCodificacionHuffman {
 
 	
 	// Constructor
-	private PlantillaCodificacionHuffman(){
-		
-	}
+	private PlantillaCodificacionHuffman(){}
 	
 	/*
 	* Se lee el archivo de entrada (filePathIn, a comprimir) como secuencia de palabras de 8 bits 
@@ -48,28 +43,20 @@ public class PlantillaCodificacionHuffman {
 							// de 8 bits y el tipo char es de 16 bits
 		}
 		char[] input = sb.toString().toCharArray();
-		//System.out.print(input);
+		
 
 		///////////////////////TAREA1.1///////////////////////
 		// Generar tabla de frecuencias (freq) a partir del array de tipo char input.
-		//Map<Character, Integer> freq;
-		//freq = new HashMap<Character, Integer>();
 		int[] freq = new int[256];
 		
-		
 		for(int i=0; i<input.length;i++) {
-			//freq.put(input[i], 1);
 			freq[input[i]]++;
-			/*else {
-				int valor = freq.get(input[i]);
-				valor++;
-				//Ahora freq contiene una tabla hash con las frecuencias de aparici�n
-				freq.put(input[i], valor);
-			}*/
 		}
 		
-		System.out.println(freq);
+		System.out.println("El archivo " + filePathIn + " se ha comprimido correctamente.");
 		//////////////////////////////////////////////////////
+		
+		
 		
 		// Construir árbol de Huffman.
         ArbolHuffman arbol = construirArbol(freq); 
@@ -78,17 +65,14 @@ public class PlantillaCodificacionHuffman {
 		// Construir diccionario de búsqueda -> Pares (símbolo,código).
 		// diccionarioCodigos será una estructura de tipo Map, Hashtable, String[], ...,
 		// dependiendo de la implementación elegida.
-        //Map<Character, String> diccionarioCodigos = new HashMap<Character, String>();
         String [] diccionarioCodigos = new String[256];
-        for(int i=0; i< diccionarioCodigos.length;i++) {
-        	//diccionarioCodigos.put(i, value)= new String();
-        	diccionarioCodigos[i] = new String();
-        }
-       // String codigoCamino = "";
         
-        construirCodigos(diccionarioCodigos,arbol,"");
-		
+        for(int i=0; i< diccionarioCodigos.length;i++) {
+        	diccionarioCodigos[i] = new String();
+        }        
+        
 		// Codificar la trama (char[]input) usando el diccionario de códigos.
+        construirCodigos(diccionarioCodigos,arbol,"");
         codificar(input,diccionarioCodigos,filePathOut,arbol);
 	}
     
@@ -105,89 +89,60 @@ public class PlantillaCodificacionHuffman {
     	// implementación propia).
         PriorityQueue<ArbolHuffman> cola = new PriorityQueue<ArbolHuffman>();
         //////////////////////////////////////////////////////
-   
-    	
-    	
-    	
+ 
+        
+        
+        
     	///////////////////////TAREA1.3///////////////////////
         // Inicializar la cola de prioridad con árboles simples (nodos hoja) para 
     	// cada símbolo de la tabla de frecuencias. Usar la estructura de datos 
     	// de tipo arbol binario que se facilita en los recursos de la práctica
     	// (ArbolHuffman.java).
+        
         for (int i = 0; i < freq.length; i++) {
 			if (freq[i] != 0) {
+				//Se inicializa el arbol con el simbolo, su frecuencia, la rama izquierda y la rama derecha
 				ArbolHuffman arbol = new ArbolHuffman((char) i, freq[i], null, null);
 				cola.add(arbol);
 			}
 		}
-		ArbolHuffman arbolAux = null;
-		while (cola.size() != 1) {
+        //////////////////////////////////////////////////////
+    	
+    	
+        
+        
+    	///////////////////////TAREA1.4///////////////////////
+    	// Construir el arbol de Huffman final/completo de manera iterativa 
+    	// retirando de la cola de prioridad el par de nodos con menor frecuencia.
+        
+        ArbolHuffman arbolAux = null;
+		while (cola.size() != 1) { //Si la cola tiene mas de un elemento entonces se crean dos arboles auxiliares
+			//Cada arbol retira el par de nodos con menor frecuencia
 			ArbolHuffman arbolAux2 = cola.poll();
 			ArbolHuffman arbolAux3 = cola.poll();
-			if (arbolAux2.getFrecuencia() > arbolAux2.getFrecuencia()) {
+			//Si la frecuencia del simbolo cogido por el primer arbol tiene mayor frecuencia que el escogido por el segundo
+			//se crea un arbol auxiliar con el elemento a la derecha y si es menor a la izquierda.
+			if (arbolAux2.getFrecuencia() > arbolAux3.getFrecuencia()) {
+				//el arbolAux2 se mete en la derecha porque la frecuencia es mayor
 				arbolAux = new ArbolHuffman('\0', arbolAux2.getFrecuencia() + arbolAux3.getFrecuencia(), arbolAux3, arbolAux2);
 
 			} else {
+				//El arbolAux3 se mete a la derecha porque la frecuencia es mayor
 				arbolAux = new ArbolHuffman('\0', arbolAux2.getFrecuencia() + arbolAux3.getFrecuencia(), arbolAux2, arbolAux3);
 			}
 			cola.add(arbolAux);
 		}
 		
 		return cola.poll();
-
-        //////////////////////////////////////////////////////
-    	
-    	
-    	///////////////////////TAREA1.4///////////////////////
-    	// Construir el arbol de Huffman final/completo de manera iterativa 
-    	// retirando de la cola de prioridad el par de nodos con menor frecuencia.
-    	
         //////////////////////////////////////////////////////  
-    	
+		
+		
+		
     	// Sustituir este objeto retornando el árbol de Huffman final 
     	// construido en la TAREA1.4
     	//return new ArbolHuffman(); 
     }
-    
-   /* 
-    * Construir arbol de Huffman a partir de la tabla de frecuencias.
-    * (Si se ha usado una estructura Map para albergar la tabla de frecuencias).
-    */
- 	private ArbolHuffman construirArbol(Map<Character,Integer> freq) {
- 		
- 		///////////////////////TAREA1.2///////////////////////
- 		// Instanciar cola de prioridad (de tipo TreeSet, PriorityQueue o una 
-    	// implementación propia).
-   
-        		
-        //////////////////////////////////////////////////////
-    	
- 		
-    	///////////////////////TAREA1.3///////////////////////
-       // Inicializar la cola de prioridad con árboles simples (nodos hoja) para 
-       // cada símbolo de la tabla de frecuencias. Usar la estructura de datos 
-       // de tipo arbol binario que se facilita en los recursos de la práctica
-   		// (ArbolHuffman.java).
-       
-       
-       
-       
-       
-       
-       
-       
-        //////////////////////////////////////////////////////
-    	
- 		
-    	///////////////////////TAREA1.4///////////////////////
-    	
-        //////////////////////////////////////////////////////  
-    	
- 		// Sustituir este objeto retornando el árbol de Huffman final 
- 		// construido en la TAREA1.4
-     	return new ArbolHuffman(); 
- 	}
- 	
+	
    /* 
     * Construir diccionario de búsqueda -> Pares (símbolo,código).
     * (Si se usa un arreglo String[] para albergar el diccionario de códigos).
@@ -202,6 +157,7 @@ public class PlantillaCodificacionHuffman {
         // Para obtener la máxima calificación en esta tarea la tabla debe construirse 
         // recorriendo al árbol una sola vez.
 
+    	//Los codigos se crean asi: izquierda (0) y derecha (1)
     	if(arbol.getIzquierdo() == null && arbol.getDerecho() == null) {
     		diccionarioCodigos[arbol.getSimbolo()] = codigoCamino;
     	
@@ -213,20 +169,10 @@ public class PlantillaCodificacionHuffman {
 			construirCodigos(diccionarioCodigos, arbol.getDerecho(), codigoCamino + '1');
 		}
 	}
-        //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     }
     
-   /* 
-    * Construir diccionario de búsqueda -> Pares (símbolo,código).
-    * (Si se usa una estructura Map para albergar el diccionario de códigos).
-    */
-    private void construirCodigos(Map<Character,String>  diccionarioCodigos, ArbolHuffman arbol,String codigoCamino){
-    	
-    	///////////////////////TAREA1.5///////////////////////
-
-        //////////////////////////////////////////////////////
-    }
-    
+  
    /* 
     * Codificar la trama (char[]input) usando el diccionario de códigos y escribirla en el
     * archivo de salida cuyo path (String filePathOut) se facilita como argumento.
@@ -242,41 +188,31 @@ public class PlantillaCodificacionHuffman {
         // Escribir también el número de bytes del mensaje original (sin comprimir).
         escritor.escribirEntero(input.length);
         
-        System.out.println("Entra en codificar");
     	
     	///////////////////////TAREA1.6///////////////////////
         // Codificación usando el diccionario de códigos y escritura en el archivo de salida. 
-    	
+        
+        for (int i = 0; i < input.length; i++) {
+			String codificado = diccionarioCodigos[input[i]];
+			//Para cada elemento de input vamos escribiendo en el fichero un valor u otro
+			//dependiendo de si el valor leido corresponde con un 0(false) o un 1(true)
+			for (int j = 0; j < codificado.length(); j++) {
+				if (codificado.charAt(j) == '1') {
+					escritor.escribirBit(true);
+				} else {
+					escritor.escribirBit(false);
+				}
+			}
+
+		}
         //////////////////////////////////////////////////////
         
     	escritor.cerrarFlujo();
     }
     
-   /* 
-    * Codificar la trama (char[]input) usando el diccionario de códigos y escribirla en el
-    * archivo de salida cuyo path (String filePathOut) se facilita como argumento.
-    * (Si se usa una estructura Map para albergar el diccionario de códigos).
-    */
-    private void codificar(char[] input, Map<Character,String> diccionarioCodigos, String filePathOut, ArbolHuffman arbol){
-    	
-    	EscritorBinario escritor = new EscritorBinario(filePathOut);
-    	
-    	// Serializar árbol de Huffman para recuperarlo posteriormente en la descompresión.
-        serializarArbol(arbol,escritor);
-        
-        // Escribir también el número de bytes del mensaje original (sin comprimir).
-        escritor.escribirEntero(input.length);
-    	
-    	///////////////////////TAREA1.6///////////////////////
-        // Codificación usando el diccionario de códigos y escritura en el archivo de salida. 
-        
-        //////////////////////////////////////////////////////
-        
-    	escritor.cerrarFlujo();
-    }
     
    /* 
-    * Serializar árbol de Huffman para recuperarlo posteriormente en la descompresión. Se
+    * Serializar arbol de Huffman para recuperarlo posteriormente en la descompresión. Se
     * escribe en la parte inicial del archivo de salida.
     */
     private void serializarArbol(ArbolHuffman arbol, EscritorBinario escritor){
@@ -308,6 +244,7 @@ public class PlantillaCodificacionHuffman {
 
     	///////////////////////TAREA1.7///////////////////////
     	// Decodificar usando el árbol de Huffman.
+    	
     	for (int i = 0; i < length; i++) {
     		ArbolHuffman x = arbol;
     		while (!x.esHoja()) {
@@ -319,7 +256,10 @@ public class PlantillaCodificacionHuffman {
     	}
     	//////////////////////////////////////////////////////
 
+    	
     	escritor.cerrarFlujo();
+		System.out.println("El archivo " + filePathIn + " se ha descomprimido correctamente.");
+
     }
     
     private ArbolHuffman leerArbol(LectorBinario lector) {
@@ -341,7 +281,7 @@ public class PlantillaCodificacionHuffman {
 			if(args[0].equals("-c")){
 				huffman.comprimir(args[1],args[2]);
 			}else if (args[0].equals("-d")){
-
+				huffman.descomprimir(args[1], args[2]);
 			}
 		}
 	}
