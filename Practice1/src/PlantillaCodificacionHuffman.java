@@ -103,7 +103,7 @@ public class PlantillaCodificacionHuffman {
         ///////////////////////TAREA1.2///////////////////////
         // Instanciar cola de prioridad (de tipo TreeSet, PriorityQueue o una 
     	// implementación propia).
-    
+        PriorityQueue<ArbolHuffman> cola = new PriorityQueue<ArbolHuffman>();
         //////////////////////////////////////////////////////
    
     	
@@ -114,7 +114,27 @@ public class PlantillaCodificacionHuffman {
     	// cada símbolo de la tabla de frecuencias. Usar la estructura de datos 
     	// de tipo arbol binario que se facilita en los recursos de la práctica
     	// (ArbolHuffman.java).
-    	
+        for (int i = 0; i < freq.length; i++) {
+			if (freq[i] != 0) {
+				ArbolHuffman arbol = new ArbolHuffman((char) i, freq[i], null, null);
+				cola.add(arbol);
+			}
+		}
+		ArbolHuffman arbolAux = null;
+		while (cola.size() != 1) {
+			ArbolHuffman arbolAux2 = cola.poll();
+			ArbolHuffman arbolAux3 = cola.poll();
+			if (arbolAux2.getFrecuencia() > arbolAux2.getFrecuencia()) {
+				arbolAux = new ArbolHuffman('\0', arbolAux2.getFrecuencia() + arbolAux3.getFrecuencia(), arbolAux3, arbolAux2);
+
+			} else {
+				arbolAux = new ArbolHuffman('\0', arbolAux2.getFrecuencia() + arbolAux3.getFrecuencia(), arbolAux2, arbolAux3);
+			}
+			cola.add(arbolAux);
+		}
+		
+		return cola.poll();
+
         //////////////////////////////////////////////////////
     	
     	
@@ -126,7 +146,7 @@ public class PlantillaCodificacionHuffman {
     	
     	// Sustituir este objeto retornando el árbol de Huffman final 
     	// construido en la TAREA1.4
-    	return new ArbolHuffman(); 
+    	//return new ArbolHuffman(); 
     }
     
    /* 
@@ -138,7 +158,7 @@ public class PlantillaCodificacionHuffman {
  		///////////////////////TAREA1.2///////////////////////
  		// Instanciar cola de prioridad (de tipo TreeSet, PriorityQueue o una 
     	// implementación propia).
-       Queue<ArbolHuffman> cola = new PriorityQueue<ArbolHuffman>();
+   
         		
         //////////////////////////////////////////////////////
     	
@@ -149,29 +169,7 @@ public class PlantillaCodificacionHuffman {
        // de tipo arbol binario que se facilita en los recursos de la práctica
    		// (ArbolHuffman.java).
        
-       for (int i = 0; i < freq.size(); i++) {
-			if (freq.get(i) != 0) {
-				ArbolHuffman arbol = new ArbolHuffman((char) i, freq.get(i), null, null);
-				cola.add(arbol);
-			}
-		}
-		ArbolHuffman arbolAux = null;
-		while (cola.size() != 1) {
-			ArbolHuffman arbolarbolAuxiliar = cola.poll();
-			ArbolHuffman arbolarbolAuxiliar1 = cola.poll();
-			//Vamos sacando los elementos de la colaPrioritaria de dos en dos y, dependiendo del valor que
-			//tenga cada elemento así se colocará como hijo derecho o izquierdo.
-			if (arbolarbolAuxiliar.getFrecuencia() > arbolarbolAuxiliar1.getFrecuencia()) {
-				arbolAux = new ArbolHuffman('\0', arbolarbolAuxiliar.getFrecuencia() + arbolarbolAuxiliar1.getFrecuencia(), arbolarbolAuxiliar1, arbolarbolAuxiliar);
-
-			} else {
-				arbolAux = new ArbolHuffman('\0', arbolarbolAuxiliar.getFrecuencia() + arbolarbolAuxiliar1.getFrecuencia(), arbolarbolAuxiliar, arbolarbolAuxiliar1);
-			}
-			cola.add(arbolAux);
-
-		}
-		return cola.poll();
-
+       
        
        
        
@@ -187,7 +185,7 @@ public class PlantillaCodificacionHuffman {
     	
  		// Sustituir este objeto retornando el árbol de Huffman final 
  		// construido en la TAREA1.4
-     	//return new ArbolHuffman(); 
+     	return new ArbolHuffman(); 
  	}
  	
    /* 
@@ -204,6 +202,17 @@ public class PlantillaCodificacionHuffman {
         // Para obtener la máxima calificación en esta tarea la tabla debe construirse 
         // recorriendo al árbol una sola vez.
 
+    	if(arbol.getIzquierdo() == null && arbol.getDerecho() == null) {
+    		diccionarioCodigos[arbol.getSimbolo()] = codigoCamino;
+    	
+    	} else {
+		if (arbol.getIzquierdo() != null) {
+			construirCodigos(diccionarioCodigos, arbol.getIzquierdo(), codigoCamino + '0');
+		}
+		if (arbol.getDerecho() != null) {
+			construirCodigos(diccionarioCodigos, arbol.getDerecho(), codigoCamino + '1');
+		}
+	}
         //////////////////////////////////////////////////////
     }
     
