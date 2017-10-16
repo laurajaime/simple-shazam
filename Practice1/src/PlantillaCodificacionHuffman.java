@@ -1,3 +1,9 @@
+/*******************************
+ * 
+ * 
+ * Autor: Laura Jaime Villamayor
+ * 
+ */
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -46,27 +52,23 @@ public class PlantillaCodificacionHuffman {
 
 		///////////////////////TAREA1.1///////////////////////
 		// Generar tabla de frecuencias (freq) a partir del array de tipo char input.
-		Map<Character, Integer> freq;
-		freq = new HashMap<Character, Integer>();
-
+		//Map<Character, Integer> freq;
+		//freq = new HashMap<Character, Integer>();
+		int[] freq = new int[256];
 		
 		
 		for(int i=0; i<input.length;i++) {
-			if(null==freq.get(input[i])) {
-					freq.put(input[i], 1);
-			}
-			else {
+			//freq.put(input[i], 1);
+			freq[input[i]]++;
+			/*else {
 				int valor = freq.get(input[i]);
 				valor++;
 				//Ahora freq contiene una tabla hash con las frecuencias de aparici�n
 				freq.put(input[i], valor);
-			}
+			}*/
 		}
 		
 		System.out.println(freq);
-
-		
-
 		//////////////////////////////////////////////////////
 		
 		// Construir árbol de Huffman.
@@ -76,7 +78,14 @@ public class PlantillaCodificacionHuffman {
 		// Construir diccionario de búsqueda -> Pares (símbolo,código).
 		// diccionarioCodigos será una estructura de tipo Map, Hashtable, String[], ...,
 		// dependiendo de la implementación elegida.
-        Map<Character, String> diccionarioCodigos = new HashMap<Character, String>();
+        //Map<Character, String> diccionarioCodigos = new HashMap<Character, String>();
+        String [] diccionarioCodigos = new String[256];
+        for(int i=0; i< diccionarioCodigos.length;i++) {
+        	//diccionarioCodigos.put(i, value)= new String();
+        	diccionarioCodigos[i] = new String();
+        }
+       // String codigoCamino = "";
+        
         construirCodigos(diccionarioCodigos,arbol,"");
 		
 		// Codificar la trama (char[]input) usando el diccionario de códigos.
