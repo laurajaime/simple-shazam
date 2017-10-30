@@ -47,7 +47,7 @@ public class PlantillaCodificacionHuffman {
 
 		///////////////////////TAREA1.1///////////////////////
 		// Generar tabla de frecuencias (freq) a partir del array de tipo char input.
-		int[] freq = new int[256];
+		int[] freq = new int[256]; //256 caracteres en ASCII
 		
 		for(int i=0; i<input.length;i++) {
 			freq[input[i]]++;
