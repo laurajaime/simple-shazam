@@ -107,18 +107,20 @@ public class AudioRecognizer {
         // Iterate over all the chunks/ventanas from the magnitude spectrum
         for (int c = 0; c < magnitudeSpectrum.length; c++) { 
             // Compute the hash entry for the current chunk/ventana (magnitudeSpectrum[c])
+        	//--------------------------------------
         	long hashEntry = computeHashEntry(magnitudeSpectrum[c]);
-            // ...            
+            //--------------------------------------     
             // In the case of adding the song to the repository
             if (!isMatching) { 
                 // Adding keypoint to the list in its relative hash entry which has been computed before
-                KeyPoint point = new KeyPoint(songId, c);
+            	//--------------------------------------------
+            	KeyPoint point = new KeyPoint(songId, c);
                 List<KeyPoint> listPoints = null;
                 listPoints = new ArrayList<KeyPoint>();
                 listPoints.add(point);
                 hashMapSongRepository.put(hashEntry, listPoints);
-                // ...
-                // ...
+                //--------------------------------------------------
+
             }
             // In the case of matching a song fragment
             else {
@@ -126,15 +128,31 @@ public class AudioRecognizer {
                     // in the the current chunk
                         // For each keypoint:
                             // Compute the time offset (Math.abs(point.getTimestamp() - c))
-                            // ...
-                            // Now, focus on the matchMap hashtable:
-                            // If songId (extracted from the current keypoint) has not been found yet in the matchMap add it
-                                // ...
-                            // (else) songId has been added in a past chunk
-                                // If this is the first time the computed offset appears for this particular songId
-                                    // ...
-                                // (else) 
-                                    // ...
+                            // -----------------------------------------------
+            					List<KeyPoint> listPoints = null;
+            					for(KeyPoint point : listPoints) {
+            						int offset = Math.abs(point.getTimestamp() - c);
+            						// Now, focus on the matchMap hashtable:
+                                    // If songId (extracted from the current keypoint) has not been found yet in the matchMap add it
+            						 Map<Integer, Integer> tempMap;
+            						if((tempMap = matchMap.get(point.getSongId())) == null) {
+            							tempMap = new HashMap<Integer, Integer>();
+            							tempMap.put(offset, 1);
+            							matchMap.put(point.getSongId(), tempMap);
+            						}
+            						else{
+            						// (else) songId has been added in a past chunk
+            							Integer count = tempMap.get(offset);
+            							 // If this is the first time the computed offset appears for this particular songId
+                                        if(count == null) {
+                                        	tempMap.put(offset, new Integer(1));
+                                        }
+                                        else {
+                                        	tempMap.put(offset, new Integer(count + 1));
+                                        }
+            						}
+            					}
+            				//----------------------------------------------
             }            
         } // End iterating over the chunks/ventanas of the magnitude spectrum
         // If we chose matching, we 
