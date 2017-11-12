@@ -3,6 +3,7 @@ package fingerprinting;
 import serialization.Serialization;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,13 +107,16 @@ public class AudioRecognizer {
         // Iterate over all the chunks/ventanas from the magnitude spectrum
         for (int c = 0; c < magnitudeSpectrum.length; c++) { 
             // Compute the hash entry for the current chunk/ventana (magnitudeSpectrum[c])
-            // ...
+        	long hashEntry = computeHashEntry(magnitudeSpectrum[c]);
             // ...            
             // In the case of adding the song to the repository
             if (!isMatching) { 
                 // Adding keypoint to the list in its relative hash entry which has been computed before
                 KeyPoint point = new KeyPoint(songId, c);
-                // ...
+                List<KeyPoint> listPoints = null;
+                listPoints = new ArrayList<KeyPoint>();
+                listPoints.add(point);
+                hashMapSongRepository.put(hashEntry, listPoints);
                 // ...
                 // ...
             }
