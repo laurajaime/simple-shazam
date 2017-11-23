@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
@@ -21,6 +22,7 @@ public class AudioRecognizer {
     
     // The main hashtable required in our interpretation of the algorithm to
     // store the song repository
+	//Se guarda el repositorio de canciones (transp. 14)
     private Map<Long, List<KeyPoint>> hashMapSongRepository;
     
     // Variable to stop/start the listening loop
@@ -104,22 +106,25 @@ public class AudioRecognizer {
         Map<String, Map<Integer,Integer>> matchMap = 
                 new HashMap<String, Map<Integer,Integer>>(); 
     
-        // Iterate over all the chunks/ventanas from the magnitude spectrum
+        // Iterate over all the chunks from the magnitude spectrum
         for (int c = 0; c < magnitudeSpectrum.length; c++) { 
-            // Compute the hash entry for the current chunk/ventana (magnitudeSpectrum[c])
-        	//--------------------------------------
+            // Compute the hash entry for the current chunk (magnitudeSpectrum[c])
+        	
+        	//--------------COMPLETADO------------------------
         	long hashEntry = computeHashEntry(magnitudeSpectrum[c]);
-            //--------------------------------------     
+                //---------------COMPLETADO-----------------------     
+        	
             // In the case of adding the song to the repository
-            if (!isMatching) { 
+            if (!isMatching){ 
                 // Adding keypoint to the list in its relative hash entry which has been computed before
-            	//--------------------------------------------
+            	
+            	//---------------COMPLETADO-----------------------------
             	KeyPoint point = new KeyPoint(songId, c);
                 List<KeyPoint> listPoints = null;
                 listPoints = new ArrayList<KeyPoint>();
                 listPoints.add(point);
                 hashMapSongRepository.put(hashEntry, listPoints);
-                //--------------------------------------------------
+                //---------------COMPLETADO------------------------------
 
             }
             // In the case of matching a song fragment
@@ -128,8 +133,9 @@ public class AudioRecognizer {
                     // in the the current chunk
                         // For each keypoint:
                             // Compute the time offset (Math.abs(point.getTimestamp() - c))
-                            // -----------------------------------------------
-            					List<KeyPoint> listPoints = null;
+                            // ------------------COMPLETADO-----------------------------
+            				List<KeyPoint> listPoints;
+            				if((listPoints = hashMapSongRepository.get(hashEntry)) != null) {
             					for(KeyPoint point : listPoints) {
             						int offset = Math.abs(point.getTimestamp() - c);
             						// Now, focus on the matchMap hashtable:
@@ -152,7 +158,8 @@ public class AudioRecognizer {
                                         }
             						}
             					}
-            				//----------------------------------------------
+            				}
+            				//-------------------COMPLETADO---------------------------
             }            
         } // End iterating over the chunks/ventanas of the magnitude spectrum
         // If we chose matching, we 
@@ -197,12 +204,31 @@ public class AudioRecognizer {
     // Method to find the songId with the most frequently/repeated time offset
     private void showBestMatching(Map<String, Map<Integer,Integer>> matchMap) {
         // Iterate over the songs in the hashtable used for matching (matchMap)
-        // ...
-            // (For each song) Iterate over the nested hashtable Map<offset,count>
+        // -------------------------------------------------
+    	int bestCount = 0;
+    	String bestSong = " ";
+    
+       
+    	// (For each song) Iterate over the nested hashtable Map<offset,count>
+    	for(Entry<String, Map<Integer, Integer>> entryM : matchMap.entrySet()) {
+    		String id = entryM.getKey();
+    		int bestCountForSong = 0;
+    		
+    		
+    		for(Map.Entry<Integer, Integer> entry : entryM.getValue().entrySet()) {
+    			if(entry.getValue() > bestCountForSong) {
+    				bestCountForSong = entry.getValue();
+    			}
+    			
+    			if(bestCountForSong > bestCount) {
+    				bestCount = bestCountForSong;
+    				bestSong = id;
+    			}
+    		}
+    	}
             // Get the biggest offset for the current song and update (if necessary)
             // the best overall result found till the current iteration
-               
         // Print the songId string which represents the best matching     
-        System.out.println("Best song: ");
+        System.out.println("Best song: " + bestSong);
     }
 }
