@@ -1,3 +1,8 @@
+/***************
+ * Laura Jaime Villamayor
+ ***************/
+
+
 package fingerprinting;
 
 import java.util.logging.Level;
@@ -39,7 +44,6 @@ public class AudioFingerprinting {
                 break;
             case 2:
                 // If we want to add a new song to the song repository
-            	//Añadir cancion al repositorio
                 String songId = args[1];
                 if (args[0].equals("-add")) {
                     try {
